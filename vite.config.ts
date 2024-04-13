@@ -30,8 +30,26 @@ export default defineConfig({
             sizes: '512x512',
             type: 'image/png'
           }
+        ],
+        shortcuts: [
+          {
+            name: "ホーム",
+            short_name: "home",
+            description: "ゲームをします",
+            url: "/",
+            icons: [{ src: "./shortcuts/home-256.png", sizes: "256x256" }]
+          },
+          {
+            name: "ランキング",
+            short_name: "rank",
+            description: "ランキングを見ます",
+            url: "/setting.html",
+            icons: [{ src: "./shortcuts/ranking-256.png", sizes: "256x256" }]
+          },
         ]
-      }
-    })
+      },
+
+    }),
+
   ]
 });
