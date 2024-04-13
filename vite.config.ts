@@ -16,6 +16,7 @@ export default defineConfig({
       },
       manifest: {
         name: 'My PWA App',
+        display: "standalone",
         short_name: 'MyPWA',
         description: 'My awesome PWA app description',
         theme_color: '#ffffff',
@@ -53,8 +54,6 @@ export default defineConfig({
           },
         ]
       },
-
     }),
-
   ]
 });
