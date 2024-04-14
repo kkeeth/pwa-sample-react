@@ -4,7 +4,7 @@ import { getMessaging, getToken } from 'firebase/messaging';
 import type { FirebaseApp } from 'firebase/app';
 import type { Messaging } from 'firebase/messaging';
 
-export const firebaseConfig = {
+const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
@@ -13,7 +13,8 @@ export const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
-const sw = await window.navigator.serviceWorker.register('/sw.js')
+const sw = await window.navigator.serviceWorker.register('/firebase-messaging-sw.js')
+console.log(sw)
 
 const app: FirebaseApp = initializeApp(firebaseConfig);
 const messaging: Messaging = getMessaging(app);
