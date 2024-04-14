@@ -30,6 +30,9 @@ esbuild
       "process.env.VITE_FIREBASE_APP_ID": JSON.stringify(
         process.env.VITE_FIREBASE_APP_ID,
       ),
+      "process.env.VITE_FIREBASE_VAPID_KEY": JSON.stringify(
+        process.env.VITE_FIREBASE_VAPID_KEY,
+      ),
     },
     platform: "browser",
     target: ["esnext"],

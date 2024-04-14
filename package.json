@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "build:sw": "node esbuild-sw.js",
-    "lint": "biome check check --apply src/**/*",
+    "lint": "biome check --apply src/**/*",
     "preview": "vite preview"
   },
   "dependencies": {

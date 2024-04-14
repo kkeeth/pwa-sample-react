@@ -1,6 +1,9 @@
-import { onBackgroundMessage } from 'firebase/messaging/sw'
-import { initializeApp } from 'firebase/app'
-import { getMessaging, isSupported } from 'firebase/messaging/sw'
+import { initializeApp } from "firebase/app";
+import {
+  getMessaging,
+  isSupported,
+  onBackgroundMessage,
+} from "firebase/messaging/sw";
 
 const firebaseConfig = {
   apiKey: process.env.VITE_FIREBASE_API_KEY,
@@ -9,14 +12,15 @@ const firebaseConfig = {
   storageBucket: process.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: process.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   appId: process.env.VITE_FIREBASE_APP_ID,
-}
+  vapidKey: process.env.VITE_FIREBASE_VAPID_KEY,
+};
 
-declare let self: ServiceWorkerGlobalScope
+declare let self: ServiceWorkerGlobalScope;
 const app = initializeApp(firebaseConfig);
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(self.clients.claim())
-})
+self.addEventListener("activate", (event) => {
+  event.waitUntil(self.clients.claim());
+});
 
 isSupported()
   .then(() => {
@@ -24,21 +28,21 @@ isSupported()
 
     onBackgroundMessage(messaging, (payload) => {
       console.log(
-        '[firebase-messaging-sw.js] Received background message ',
-        payload
-      )
-      const { title, body, image } = payload.notification ?? {}
+        "[firebase-messaging-sw.js] Received background message ",
+        payload,
+      );
+      const { title, body, image } = payload.notification ?? {};
 
       if (!title) {
-        return
+        return;
       }
 
       self.registration.showNotification(title, {
         body,
-        icon: image
-      })
-    })
+        icon: image,
+      });
+    });
   })
-  .catch(error => {
+  .catch((error) => {
     console.error(error);
-  })
+  });
