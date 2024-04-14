@@ -4,6 +4,7 @@ import {
   isSupported,
   onBackgroundMessage,
 } from "firebase/messaging/sw";
+import type { Messaging } from "firebase/messaging/sw";
 
 const firebaseConfig = {
   apiKey: process.env.VITE_FIREBASE_API_KEY,
@@ -15,10 +16,12 @@ const firebaseConfig = {
   vapidKey: process.env.VITE_FIREBASE_VAPID_KEY,
 };
 
-declare let self: ServiceWorkerGlobalScope;
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+declare let self: any;
 const app = initializeApp(firebaseConfig);
 
-self.addEventListener("activate", (event) => {
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+self.addEventListener("activate", (event: any) => {
   event.waitUntil(self.clients.claim());
 });
 
