@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 // https://vitejs.dev/config/
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
@@ -12,7 +14,14 @@ export default defineConfig({
         enabled: true
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+        sourcemap: true,
+        skipWaiting: true,
+        clientsClaim: true,
+        cacheId: 'my-pwa-app',
+        swDest: path.join(path.join(process.cwd(), 'dist'), 'sw.js'),
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        globDirectory: './dist/',
+        importScripts: ['firebase-messaging-sw.js'],
       },
       manifest: {
         name: 'My PWA App',
