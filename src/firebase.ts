@@ -25,25 +25,25 @@ if (!isWebPushSupported) {
   console.error("Web push is not supported in this browser");
 } else {
   navigator.serviceWorker.register("/firebase-messaging-sw.js").then((sw) => {
-    const permission = Notification.permission;
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        console.log("Notification permission granted.");
 
-    if (permission === "granted") {
-      console.log("Notification permission granted.");
-
-      getToken(messaging, {
-        serviceWorkerRegistration: sw,
-      }).then((token) => {
-        if (token) {
-          console.log("FCM Token:", token);
-        } else {
-          console.log(
-            "No registration token available. Request permission to generate one.",
-          );
-        }
-      });
-    } else {
-      console.log("Unable to get permission to notify.");
-    }
+        getToken(messaging, {
+          serviceWorkerRegistration: sw,
+        }).then((token) => {
+          if (token) {
+            console.log("FCM Token:", token);
+          } else {
+            console.log(
+              "No registration token available. Request permission to generate one.",
+            );
+          }
+        });
+      } else {
+        console.log("Unable to get permission to notify.");
+      }
+    });
   });
 }
 
