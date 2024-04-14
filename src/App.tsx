@@ -1,9 +1,7 @@
-import { useState } from "react";
+import { confirmPushNotification } from "./firebase";
 import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
     <>
       <div>
@@ -15,10 +13,10 @@ function App() {
           外部リンク（俺のポッドキャスト）
         </a>
       </div>
-      <h1>Vite + React</h1>
+      <h1>Hello Web Push!</h1>
       <div className="card">
-        <button type="button" onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button type="button" onClick={confirmPushNotification}>
+          Push 通知を許可
         </button>
       </div>
     </>

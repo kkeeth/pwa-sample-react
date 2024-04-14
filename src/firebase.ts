@@ -23,10 +23,22 @@ const isWebPushSupported =
 
 if (!isWebPushSupported) {
   console.error("Web push is not supported in this browser");
-} else {
-  navigator.serviceWorker.register("/firebase-messaging-sw.js").then((sw) => {
-    Notification.requestPermission().then((permission) => {
+}
+export const confirmPushNotification = async () => {
+  if (!("serviceWorker" in navigator)) {
+    return;
+  }
+
+  navigator.serviceWorker
+    .register("/firebase-messaging-sw.js")
+    .then(async (sw) => {
+      const permission = await Notification.requestPermission();
+      console.log(permission);
+
       if (permission === "granted") {
+        const registration = await navigator.serviceWorker.ready;
+        registration.showNotification("Web Push Granted!");
+
         console.log("Notification permission granted.");
 
         getToken(messaging, {
@@ -44,7 +56,6 @@ if (!isWebPushSupported) {
         console.log("Unable to get permission to notify.");
       }
     });
-  });
-}
+};
 
 export { messaging };
