@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "build:sw": "node esbuild-sw.js",
+    "build": "tsc && vite build && pnpm run build:sw",
+    "build:sw": "node --env-file=.env esbuild-sw.js",
     "lint": "biome check --apply src/**/*",
     "preview": "vite preview"
   },

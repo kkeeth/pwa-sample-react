@@ -1,6 +1,5 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
-
 import type { FirebaseApp } from "firebase/app";
 import type { Messaging } from "firebase/messaging";
 
@@ -24,36 +23,38 @@ const isWebPushSupported =
 if (!isWebPushSupported) {
   console.error("Web push is not supported in this browser");
 }
-export const confirmPushNotification = async () => {
+export const confirmPushNotification = async (): Promise<
+  string | undefined
+> => {
   if (!("serviceWorker" in navigator)) {
     return;
   }
 
-  navigator.serviceWorker
+  return navigator.serviceWorker
     .register("/firebase-messaging-sw.js")
     .then(async (sw) => {
       const permission = await Notification.requestPermission();
-      console.log(permission);
 
-      if (permission === "granted") {
+      if (permission !== "granted") {
+        console.log("Unable to get permission to notify.");
+      } else {
         const registration = await navigator.serviceWorker.ready;
         registration.showNotification("Web Push Granted!");
 
         console.log("Notification permission granted.");
 
-        getToken(messaging, {
+        return getToken(messaging, {
           serviceWorkerRegistration: sw,
         }).then((token) => {
-          if (token) {
-            console.log("FCM Token:", token);
-          } else {
+          if (!token) {
             console.log(
               "No registration token available. Request permission to generate one.",
             );
+          } else {
+            console.log("FCM Token:", token);
+            return token;
           }
         });
-      } else {
-        console.log("Unable to get permission to notify.");
       }
     });
 };

@@ -1,7 +1,15 @@
 import { confirmPushNotification } from "./firebase";
 import "./App.css";
+import { useState } from "react";
 
 function App() {
+  const [token, setToken] = useState<string | undefined>(undefined);
+
+  const handlePushNotification = async () => {
+    confirmPushNotification().then((newToken) => {
+      setToken(newToken);
+    });
+  };
   return (
     <>
       <div>
@@ -15,9 +23,10 @@ function App() {
       </div>
       <h1>Hello Web Push!</h1>
       <div className="card">
-        <button type="button" onClick={confirmPushNotification}>
+        <button type="button" onClick={handlePushNotification}>
           Push 通知を許可
         </button>
+        <p>{token}</p>
       </div>
     </>
   );

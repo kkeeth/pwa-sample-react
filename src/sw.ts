@@ -18,8 +18,12 @@ const firebaseConfig = {
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 declare let self: any;
-const app = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+self.addEventListener("install", (event: any) =>
+  event.waitUntil(self.skipWaiting()),
+);
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 self.addEventListener("activate", (event: any) => {
   event.waitUntil(self.clients.claim());
@@ -27,23 +31,25 @@ self.addEventListener("activate", (event: any) => {
 
 isSupported()
   .then(() => {
-    const messaging: Messaging = getMessaging(app);
+    const messaging: Messaging = getMessaging();
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    onBackgroundMessage(messaging, (payload: any) => {
+      const data = payload.data.json().data;
 
-    onBackgroundMessage(messaging, (payload) => {
       console.log(
         "[firebase-messaging-sw.js] Received background message ",
-        payload,
+        data,
       );
       const { title, body, image } = payload.notification ?? {};
 
-      if (!title) {
-        return;
-      }
-
-      self.registration.showNotification(title, {
-        body,
-        icon: image,
-      });
+      const asyncProcess = async () => {
+        await self.registration.showNotification(title ?? "通知が来ました", {
+          body: body,
+          data: data,
+          icon: image,
+        });
+      };
+      payload.waitUntil(asyncProcess());
     });
   })
   .catch((error) => {

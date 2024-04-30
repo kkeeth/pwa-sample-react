@@ -1,8 +1,4 @@
 import esbuild from "esbuild";
-import dotenv from "dotenv";
-
-// .envファイルから環境変数をロード
-dotenv.config();
 
 esbuild
   .build({
